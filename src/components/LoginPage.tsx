@@ -31,8 +31,8 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       <main className="login-card">
         <Logo size={88} showWordmark className="logo-brand--center" />
         <p className="login-tagline">
-          <span className="login-tagline-main">数据帮你管理、提升人生</span>
-          <span className="login-tagline-sub">只呈现对你有用、你也关心的内容</span>
+          <span className="login-tagline-main">{LOGIN_TAGLINE_MAIN}</span>
+          <span className="login-tagline-sub">{LOGIN_TAGLINE_SUB}</span>
         </p>
 
         <form className="login-form" onSubmit={submit}>
