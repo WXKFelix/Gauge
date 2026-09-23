@@ -54,7 +54,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         </form>
 
         <p className="login-foot">
-          数据保存在本机 · 无需注册即可体验 MVP
+          数据保存在本机 · 无需注册，打开即用
         </p>
       </main>
     </div>
