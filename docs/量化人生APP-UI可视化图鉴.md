@@ -31,11 +31,25 @@ flowchart TB
 
 ---
 
-## 2. 页面纵览（实机截图）
+## 2. 移动 APP 布局（当前默认）
 
-整页自上而下：**Header → 人生坐标 → 关键节点 → 阶段 → 六块仪表**。
+底部 **Tab**：首页 · 坐标 · 节点 · 指标；顶栏 sticky；内容区最大宽度随屏宽（520/640/960）；Toast 与 Tab 栏留出 `safe-area-inset-bottom`。
 
-<img src="./assets/ui/quantified-life-ui-overview.png" alt="量化人生 MVP 整页纵览：人生坐标条带、关键节点空状态、阶段信息与六块 SVG 仪表" width="720" />
+| 视口 | 截图文件（CI/本地脚本） |
+|------|-------------------------|
+| 320×568 | `quantified-life-home-mobile-se.png` |
+| 390×844 | `quantified-life-home-mobile-md.png` |
+| 430×932 | `quantified-life-home-mobile-lg.png` |
+
+<img src="./assets/ui/quantified-life-app-mobile-home.png" alt="iPhone 类视口首页：意义分 Hero、三列快捷指标、底部 Tab" width="390" />
+
+<img src="./assets/ui/quantified-life-app-mobile-journey.png" alt="坐标 Tab：横滑 snap 的 A/B/C 轨迹" width="390" />
+
+---
+
+## 2b. 早期单页纵览（归档）
+
+<img src="./assets/ui/quantified-life-ui-overview.png" alt="早期单页纵览" width="720" />
 
 ---
 
