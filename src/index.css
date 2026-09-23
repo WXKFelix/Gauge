@@ -15,9 +15,72 @@ body {
 }
 
 .app {
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.concept-panel {
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #1e293b;
+  background: rgba(30, 41, 59, 0.45);
+}
+
+.concept-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  color: #cbd5e1;
+}
+
+.concept-panel p {
+  margin: 0 0 1rem;
+  color: #94a3b8;
+  line-height: 1.55;
+}
+
+.stage-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.stage-meta div {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+}
+
+.stage-meta dt {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.stage-meta dd {
+  margin: 0.25rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.concept-link {
+  margin-bottom: 0 !important;
+  font-size: 0.85rem;
+}
+
+.concept-link code {
+  color: #7dd3fc;
 }
 
 .app-header {

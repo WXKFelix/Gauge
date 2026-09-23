@@ -1,8 +1,8 @@
-# Gauge
+# Gauge · 量化人生
 
-A small real-time gauge dashboard built with **React**, **TypeScript**, and **Vite**.
-It renders a grid of SVG gauges (CPU, memory, network, temperature) whose values
-drift over time to simulate a live metrics feed.
+基于 **React**、**TypeScript** 与 **Vite** 的人生量化仪表盘。将原 `cloudWardrobe-ui` 分支 **量化人生概念** 迁入本仓库：用 SVG 仪表展示资产、工作量、多巴胺指数、衣橱利用率与穿搭满意度，并汇总为人生意义分。
+
+概念说明见 [docs/量化人生概念.md](docs/量化人生概念.md)。
 
 ## Tech stack
 
@@ -39,7 +39,9 @@ src/
     Gauge.test.tsx     # component tests
   gauge-utils.ts       # pure geometry/color helpers
   gauge-utils.test.ts  # unit tests for the helpers
-  App.tsx              # dashboard with live-updating metrics
+  quantified-life.ts   # 量化人生模型（多巴胺、阶段、意义分）
+  quantified-life.test.ts
+  App.tsx              # 量化人生仪表盘
   main.tsx             # React entry point
   index.css            # styles
 ```
