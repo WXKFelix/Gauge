@@ -25,7 +25,8 @@ export function NodeAdvicePanel({ bundle, onFeedback }: NodeAdvicePanelProps) {
       <section className="advisor-panel" aria-labelledby="advisor-heading">
         <h2 id="advisor-heading">关键节点</h2>
         <p className="advisor-empty" role="status">
-          暂无节点提醒。当指标或阶段满足规则时，会在此给出 2–3 条参考方案（非唯一最优解）。
+          暂无新建议。当你关心的指标或人生阶段需要行动参考时，这里会出现 2–3
+          条对你可能有帮助的路径——采纳与否由你决定。
         </p>
       </section>
     );

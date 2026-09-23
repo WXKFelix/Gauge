@@ -28,7 +28,7 @@ const sampleBundle = {
 describe("NodeAdvicePanel", () => {
   it("shows empty state when no bundle", () => {
     render(<NodeAdvicePanel bundle={null} onFeedback={vi.fn()} />);
-    expect(screen.getByText(/暂无节点提醒/)).toBeInTheDocument();
+    expect(screen.getByText(/暂无新建议/)).toBeInTheDocument();
   });
 
   it("calls onFeedback when helpful clicked", () => {

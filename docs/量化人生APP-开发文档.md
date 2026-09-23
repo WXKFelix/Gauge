@@ -246,7 +246,8 @@ REST 风格示例，非 MVP 范围。
     "wardrobe": 0.25,
     "outfit": 0.25
   },
-  "advisorFeedback": []
+  "advisorFeedback": [],
+  "focusAreas": ["career", "daily", "relationship"]
 }
 ```
 

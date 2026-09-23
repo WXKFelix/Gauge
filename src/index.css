@@ -265,6 +265,98 @@ body::before {
   color: var(--text-secondary);
 }
 
+.mission-banner {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.08),
+    rgba(168, 85, 247, 0.06)
+  );
+}
+
+.focus-picker {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.focus-picker h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+.focus-picker-lede {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.focus-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.focus-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: #0f172a;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  min-height: 2.75rem;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.focus-chip--active {
+  border-color: rgba(34, 211, 238, 0.55);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.focus-chip-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.focus-chip-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.gauge-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.metric-help {
+  margin: 0;
+  padding: 0 0.35rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .home-hint {
   margin: 0;
   padding: 0.85rem 1rem;

@@ -4,8 +4,11 @@ import { Gauge } from "./components/Gauge";
 import { HeroMeaningCard } from "./components/HeroMeaningCard";
 import { JourneyStrip } from "./components/JourneyStrip";
 import { NodeAdvicePanel } from "./components/NodeAdvicePanel";
+import { FocusPicker } from "./components/FocusPicker";
 import { QuickMetricRow } from "./components/QuickMetricRow";
 import { useGaugeSize } from "./hooks/useGaugeSize";
+import { APP_MISSION, METRIC_HELP } from "./metric-copy";
+import type { FocusAreaId } from "./user-focus";
 import {
   DEFAULT_JOURNEY,
   evaluateAdvisor,
@@ -45,6 +48,11 @@ export default function App() {
   );
   const [live, setLive] = useState(true);
   const [feedbackToast, setFeedbackToast] = useState<string | null>(null);
+  const [focusAreas, setFocusAreas] = useState<FocusAreaId[]>(() =>
+    typeof window !== "undefined"
+      ? loadPersistedState().focusAreas
+      : ["career", "daily", "relationship"]
+  );
 
   const gaugeSize = useGaugeSize("default");
   const heroGaugeSize = useGaugeSize("hero");
@@ -65,8 +73,9 @@ export default function App() {
       inputs,
       journey,
       advisorFeedback,
+      focusAreas,
     });
-  }, [inputs, journey, advisorFeedback]);
+  }, [inputs, journey, advisorFeedback, focusAreas]);
 
   useEffect(() => {
     if (!live) return;
@@ -177,7 +186,7 @@ export default function App() {
           </span>
           <div>
             <p className="app-topbar-title">量化人生</p>
-            <p className="app-topbar-sub">本机数据 · 安全区适配</p>
+            <p className="app-topbar-sub">数据为管理人生服务 · 本机保存</p>
           </div>
         </div>
         <button
@@ -198,6 +207,7 @@ export default function App() {
           hidden={tab !== "home"}
           className="tab-panel"
         >
+          <p className="mission-banner">{APP_MISSION}</p>
           <HeroMeaningCard
             meaningScore={snapshot.meaningScore}
             stageLabel={snapshot.currentStage.label}
@@ -205,9 +215,12 @@ export default function App() {
             age={snapshot.age}
             gaugeSize={heroGaugeSize}
           />
+          <FocusPicker selected={focusAreas} onChange={setFocusAreas} />
           <QuickMetricRow items={quickMetrics} />
           <p className="home-hint">
-            在「坐标」记录 A→B→C，在「节点」查看人生关键建议。
+            {focusAreas.includes("relationship")
+              ? "「坐标」记录你去过哪里、谁在那里；「节点」在关键阶段给出可执行参考。"
+              : "「指标」里每项数据都附带说明——只为帮你管理和提升，不为了刷分。"}
           </p>
         </div>
 
@@ -252,7 +265,7 @@ export default function App() {
           <section className="concept-panel" aria-labelledby="concept-heading">
             <h2 id="concept-heading">阶段与指标</h2>
             <p>
-              多巴胺 ∝ <strong>资产 − 工作量</strong>；意义分结合生活利用率与穿搭。
+              下面每个数字都应对你有用。公式：多巴胺 ∝ <strong>资产 − 工作量</strong>；意义分结合你选的生活维度。
             </p>
             <dl className="stage-meta">
               <div>
@@ -290,16 +303,18 @@ export default function App() {
 
           <section className="gauge-grid gauge-grid--metrics" aria-label="人生指标">
             {gauges.map((m) => (
-              <Gauge
-                key={m.key}
-                label={m.label}
-                value={m.value}
-                min={m.min}
-                max={m.max}
-                unit={m.unit}
-                warn={m.warn}
-                size={gaugeSize}
-              />
+              <div key={m.key} className="gauge-card-wrap">
+                <Gauge
+                  label={m.label}
+                  value={m.value}
+                  min={m.min}
+                  max={m.max}
+                  unit={m.unit}
+                  warn={m.warn}
+                  size={gaugeSize}
+                />
+                <p className="metric-help">{METRIC_HELP[m.key] ?? ""}</p>
+              </div>
             ))}
           </section>
         </div>

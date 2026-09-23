@@ -4,6 +4,10 @@ import {
   type AdvisorFeedback,
   type LifeJourneyState,
 } from "./life-journey";
+import {
+  DEFAULT_FOCUS_AREAS,
+  type FocusAreaId,
+} from "./user-focus";
 
 export const STORAGE_KEY = "quantified-life:v1";
 
@@ -12,6 +16,7 @@ export interface PersistedAppState {
   inputs: QuantifiedLifeInputs;
   journey: LifeJourneyState;
   advisorFeedback: AdvisorFeedback[];
+  focusAreas: FocusAreaId[];
 }
 
 export function defaultPersistedState(): PersistedAppState {
@@ -23,6 +28,7 @@ export function defaultPersistedState(): PersistedAppState {
       points: DEFAULT_JOURNEY.points.map((p) => ({ ...p })),
     },
     advisorFeedback: [],
+    focusAreas: [...DEFAULT_FOCUS_AREAS],
   };
 }
 
@@ -50,7 +56,10 @@ export function parsePersistedState(raw: string | null): PersistedAppState {
     const advisorFeedback = Array.isArray(data.advisorFeedback)
       ? (data.advisorFeedback as AdvisorFeedback[])
       : [];
-    return { version: 1, inputs, journey, advisorFeedback };
+    const focusAreas = Array.isArray(data.focusAreas)
+      ? (data.focusAreas as FocusAreaId[])
+      : base.focusAreas;
+    return { version: 1, inputs, journey, advisorFeedback, focusAreas };
   } catch {
     return defaultPersistedState();
   }

@@ -53,8 +53,8 @@ export function JourneyStrip({ journey, onJourneyChange }: JourneyStripProps) {
     <section className="journey-panel" aria-labelledby="journey-heading">
       <h2 id="journey-heading">人生坐标</h2>
       <p className="journey-lede">
-        你在 <strong>A 点</strong> 出生；前 20 年多半在 A 附近。之后可能是 B、C、D…
-        也有人一生都在 A——<strong>每一种都有效</strong>。
+        地图记录<strong>对你有意义</strong>的地方：A 是起点，B、C、D 是你在意的经历与选择。
+        一生只在 A 附近同样值得被看见。
       </p>
 
       {journey.mostlyAtBirth && ordered.length <= 1 ? (
