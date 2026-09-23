@@ -1,55 +1,49 @@
 # Gauge · 量化人生
 
-基于 **React**、**TypeScript** 与 **Vite** 的人生量化仪表盘。将原 `cloudWardrobe-ui` 分支 **量化人生概念** 迁入本仓库：用 SVG 仪表展示资产、工作量、多巴胺指数、衣橱利用率与穿搭满意度，并汇总为人生意义分。
+**Life, measured. Choices, clear.**  
+看清你走的线，算清岔口的代价。
 
-概念说明见 [docs/量化人生概念.md](docs/量化人生概念.md)。
+独立产品仓库：[WXKFelix/Gauge](https://github.com/WXKFelix/Gauge)。与 **cloudWardrobe（云衣柜）** 完全分离：不合并代码、不共用 EAS `projectId`。
 
-## Tech stack
+## 文档
 
-- [Vite](https://vitejs.dev/) 5 for dev server and bundling
-- [React](https://react.dev/) 18 + TypeScript
-- [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) for unit/component tests
+| 文档 | 路径 |
+|------|------|
+| 产品 PRD | [docs/product/PRD.md](docs/product/PRD.md) |
+| UI 规范 | [docs/design/UI-SPEC.md](docs/design/UI-SPEC.md) |
+| 开发说明 | [docs/development/README.md](docs/development/README.md) |
+| 概念索引 | [docs/量化人生概念.md](docs/量化人生概念.md) |
 
-## Getting started
+## 产品概要（MVP）
 
-Requirements: Node.js 20+ (developed on Node 22) and npm.
+- **Onboarding**：价值观（成长 / 稳定 / 风险）→ 人生主线 → 锚点 A + 当前站 B  
+- **Tab**：今日（签到 + 对齐度）· 轨迹 · 决策（Offer 向导）· 设置（导出 JSON）  
+- **原则**：无人生总分、无排行榜；关键节点 2～3 条 Pareto 路径 + 假设 + 复盘日  
+
+目标技术栈：**Expo SDK 56** + React Native + TypeScript + expo-router + zod（详见开发文档）。
+
+## 当前仓库状态
+
+本分支可能仍包含 **Vite + React** 的早期仪表盘原型（`npm run dev`，端口 5173），用于 SVG Gauge 与量化公式实验。**正式 MVP 以 Expo 工程为准**（见 [docs/development/README.md](docs/development/README.md)）。
+
+### Vite 原型（若尚未迁移）
 
 ```bash
-npm ci        # install exact dependencies from package-lock.json
-npm run dev   # start the dev server at http://localhost:5173
+npm ci
+npm run dev    # http://localhost:5173
+npm test
+npm run typecheck
 ```
 
-## Scripts
+### Expo MVP（ scaffold 完成后）
 
-| Command            | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| `npm run dev`      | Start the Vite dev server on port 5173.            |
-| `npm run build`    | Type-check (`tsc --noEmit`) and build to `dist/`.  |
-| `npm run preview`  | Preview the production build on port 4173.         |
-| `npm test`         | Run the unit and component test suites once.       |
-| `npm run test:watch` | Run tests in watch mode.                         |
-| `npm run typecheck` | Type-check without emitting.                       |
-
-## Project structure
-
-```
-src/
-  components/
-    Gauge.tsx          # SVG gauge component
-    Gauge.test.tsx     # component tests
-  gauge-utils.ts       # pure geometry/color helpers
-  gauge-utils.test.ts  # unit tests for the helpers
-  quantified-life.ts   # 量化人生模型（多巴胺、阶段、意义分）
-  quantified-life.test.ts
-  App.tsx              # 量化人生仪表盘
-  main.tsx             # React entry point
-  index.css            # styles
+```bash
+npm ci
+CI=1 npx expo start --web --port 8081   # 浏览器标题：量化人生
 ```
 
-## Cloud Agent environment
+## Cloud Agent
 
-This repository is configured for Cursor Cloud Agents via
-[`.cursor/environment.json`](.cursor/environment.json):
+[`.cursor/environment.json`](.cursor/environment.json) 配置安装与开发服务器。在 Gauge 环境内开发时，Web 验证优先：`CI=1 npx expo start --web --port 8081`（Expo 就绪后更新 `environment.json` 中的终端命令）。
 
-- `install`: `npm ci`
-- `terminals`: runs `npm run dev` so the dashboard is available while an agent works.
+若 push 出现 403，请确认 Cursor Environment 与 GitHub App 已授权 **Gauge** 仓库，而非 cloudWardrobe。
