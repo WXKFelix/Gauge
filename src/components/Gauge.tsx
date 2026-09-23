@@ -14,6 +14,8 @@ export interface GaugeProps {
   size?: number;
   /** Highlights border when metric needs attention. */
   warn?: boolean;
+  /** Hero / home screen emphasis. */
+  featured?: boolean;
 }
 
 export function Gauge({
@@ -24,6 +26,7 @@ export function Gauge({
   unit = "",
   size = 200,
   warn = false,
+  featured = false,
 }: GaugeProps) {
   const clamped = clamp(value, min, max);
   const fraction = valueToFraction(clamped, min, max);
@@ -32,7 +35,9 @@ export function Gauge({
 
   return (
     <figure
-      className={`gauge${warn ? " gauge--warn" : ""}`}
+      className={`gauge${warn ? " gauge--warn" : ""}${
+        featured ? " gauge--featured" : ""
+      }`}
       aria-label={`${label} gauge`}
     >
       <svg

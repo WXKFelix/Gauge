@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { AppTabBar, type AppTabId } from "./components/AppTabBar";
 import { Gauge } from "./components/Gauge";
+import { HeroMeaningCard } from "./components/HeroMeaningCard";
 import { JourneyStrip } from "./components/JourneyStrip";
 import { NodeAdvicePanel } from "./components/NodeAdvicePanel";
+import { QuickMetricRow } from "./components/QuickMetricRow";
+import { useGaugeSize } from "./hooks/useGaugeSize";
 import {
   DEFAULT_JOURNEY,
   evaluateAdvisor,
@@ -20,6 +24,7 @@ import {
 } from "./storage";
 
 export default function App() {
+  const [tab, setTab] = useState<AppTabId>("home");
   const [inputs, setInputs] = useState<QuantifiedLifeInputs>(() =>
     typeof window !== "undefined"
       ? loadPersistedState().inputs
@@ -40,6 +45,9 @@ export default function App() {
   );
   const [live, setLive] = useState(true);
   const [feedbackToast, setFeedbackToast] = useState<string | null>(null);
+
+  const gaugeSize = useGaugeSize("default");
+  const heroGaugeSize = useGaugeSize("hero");
 
   const snapshot = useMemo(
     () => buildQuantifiedLifeSnapshot(inputs),
@@ -137,36 +145,165 @@ export default function App() {
     },
   ] as const;
 
+  const quickMetrics = [
+    {
+      key: "assets",
+      label: "资产",
+      value: snapshot.assets,
+      unit: "分",
+    },
+    {
+      key: "workload",
+      label: "工作量",
+      value: snapshot.workload,
+      unit: "分",
+      warn: snapshot.workload >= 70,
+    },
+    {
+      key: "dopamine",
+      label: "多巴胺",
+      value: snapshot.dopamineIndex,
+      unit: "分",
+      warn: snapshot.dopamineIndex < 40,
+    },
+  ];
+
   return (
-    <main className="app">
-      <header className="app-header">
-        <p className="eyebrow">量化人生 APP · Gauge Web MVP</p>
-        <h1>量化人生</h1>
-        <p className="subtitle">
-          人生坐标 A→B→C 与资产、工作量仪表盘 · 数据保存在本机
-        </p>
+    <div className="app-shell">
+      <header className="app-topbar">
+        <div className="app-topbar-brand">
+          <span className="app-logo" aria-hidden>
+            ◉
+          </span>
+          <div>
+            <p className="app-topbar-title">量化人生</p>
+            <p className="app-topbar-sub">本机数据 · 安全区适配</p>
+          </div>
+        </div>
         <button
-          className="toggle"
+          className="toggle toggle--compact"
           type="button"
           onClick={() => setLive((v) => !v)}
           aria-pressed={live}
         >
-          {live ? "暂停" : "恢复"}模拟更新
+          {live ? "暂停" : "恢复"}
         </button>
       </header>
 
-      <JourneyStrip journey={journey} onJourneyChange={setJourney} />
+      <main className="app-main">
+        <div
+          id="panel-home"
+          role="tabpanel"
+          aria-labelledby="tab-home"
+          hidden={tab !== "home"}
+          className="tab-panel"
+        >
+          <HeroMeaningCard
+            meaningScore={snapshot.meaningScore}
+            stageLabel={snapshot.currentStage.label}
+            stageProgress={snapshot.stageProgress}
+            age={snapshot.age}
+            gaugeSize={heroGaugeSize}
+          />
+          <QuickMetricRow items={quickMetrics} />
+          <p className="home-hint">
+            在「坐标」记录 A→B→C，在「节点」查看人生关键建议。
+          </p>
+        </div>
 
-      <NodeAdvicePanel
-        bundle={advisorBundle}
-        onFeedback={(fb) => {
-          setAdvisorFeedback((prev) => [
-            ...prev,
-            { ...fb, at: new Date().toISOString() },
-          ]);
-          setFeedbackToast(fb.helpful ? "已记录：这条建议有帮助" : "已记录：暂不采纳");
-        }}
-      />
+        <div
+          id="panel-journey"
+          role="tabpanel"
+          aria-labelledby="tab-journey"
+          hidden={tab !== "journey"}
+          className="tab-panel"
+        >
+          <JourneyStrip journey={journey} onJourneyChange={setJourney} />
+        </div>
+
+        <div
+          id="panel-nodes"
+          role="tabpanel"
+          aria-labelledby="tab-nodes"
+          hidden={tab !== "nodes"}
+          className="tab-panel"
+        >
+          <NodeAdvicePanel
+            bundle={advisorBundle}
+            onFeedback={(fb) => {
+              setAdvisorFeedback((prev) => [
+                ...prev,
+                { ...fb, at: new Date().toISOString() },
+              ]);
+              setFeedbackToast(
+                fb.helpful ? "已记录：这条建议有帮助" : "已记录：暂不采纳"
+              );
+            }}
+          />
+        </div>
+
+        <div
+          id="panel-metrics"
+          role="tabpanel"
+          aria-labelledby="tab-metrics"
+          hidden={tab !== "metrics"}
+          className="tab-panel"
+        >
+          <section className="concept-panel" aria-labelledby="concept-heading">
+            <h2 id="concept-heading">阶段与指标</h2>
+            <p>
+              多巴胺 ∝ <strong>资产 − 工作量</strong>；意义分结合衣橱与穿搭。
+            </p>
+            <dl className="stage-meta">
+              <div>
+                <dt>当前阶段</dt>
+                <dd>{snapshot.currentStage.label}</dd>
+              </div>
+              <div>
+                <dt>年龄</dt>
+                <dd>
+                  <label className="age-input">
+                    <span className="sr-only">年龄</span>
+                    <input
+                      type="number"
+                      min={0}
+                      max={100}
+                      inputMode="numeric"
+                      value={inputs.age}
+                      onChange={(e) =>
+                        setInputs((prev) => ({
+                          ...prev,
+                          age: Number(e.target.value) || 0,
+                        }))
+                      }
+                    />
+                    岁
+                  </label>
+                </dd>
+              </div>
+              <div>
+                <dt>阶段进度</dt>
+                <dd>{snapshot.stageProgress.toFixed(0)}%</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section className="gauge-grid gauge-grid--metrics" aria-label="人生指标">
+            {gauges.map((m) => (
+              <Gauge
+                key={m.key}
+                label={m.label}
+                value={m.value}
+                min={m.min}
+                max={m.max}
+                unit={m.unit}
+                warn={m.warn}
+                size={gaugeSize}
+              />
+            ))}
+          </section>
+        </div>
+      </main>
 
       {feedbackToast ? (
         <div className="toast" role="status">
@@ -174,60 +311,11 @@ export default function App() {
         </div>
       ) : null}
 
-      <section className="concept-panel" aria-labelledby="concept-heading">
-        <h2 id="concept-heading">阶段与指标</h2>
-        <p>
-          多巴胺指数 ∝ <strong>资产 − 工作量</strong>；综合意义分结合衣橱利用率与穿搭满意度。
-        </p>
-        <dl className="stage-meta">
-          <div>
-            <dt>当前阶段</dt>
-            <dd>{snapshot.currentStage.label}</dd>
-          </div>
-          <div>
-            <dt>年龄</dt>
-            <dd>
-              <label className="age-input">
-                <span className="sr-only">年龄</span>
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={inputs.age}
-                  onChange={(e) =>
-                    setInputs((prev) => ({
-                      ...prev,
-                      age: Number(e.target.value) || 0,
-                    }))
-                  }
-                />
-                岁
-              </label>
-            </dd>
-          </div>
-          <div>
-            <dt>阶段进度</dt>
-            <dd>{snapshot.stageProgress.toFixed(0)}%</dd>
-          </div>
-        </dl>
-        <p className="concept-link">
-          文档：<code>docs/量化人生APP-UI可视化图鉴.md</code>
-        </p>
-      </section>
-
-      <section className="gauge-grid" aria-label="人生指标">
-        {gauges.map((m) => (
-          <Gauge
-            key={m.key}
-            label={m.label}
-            value={m.value}
-            min={m.min}
-            max={m.max}
-            unit={m.unit}
-            warn={m.warn}
-          />
-        ))}
-      </section>
-    </main>
+      <AppTabBar
+        active={tab}
+        onChange={setTab}
+        nodeBadge={advisorBundle != null}
+      />
+    </div>
   );
 }

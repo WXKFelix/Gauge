@@ -66,7 +66,11 @@ export function JourneyStrip({ journey, onJourneyChange }: JourneyStripProps) {
         </div>
       ) : null}
 
-      <div className="journey-strip" role="list" aria-label="人生坐标轨迹">
+      <div
+        className="journey-strip journey-strip--scroll"
+        role="list"
+        aria-label="人生坐标轨迹"
+      >
         {ordered.map((point, index) => (
           <div className="journey-strip-item" role="listitem" key={point.id}>
             {index > 0 ? (
