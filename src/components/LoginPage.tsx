@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createSession, saveSession, type UserSession } from "../auth";
-import { APP_MISSION } from "../metric-copy";
+import { LOGIN_TAGLINE_MAIN, LOGIN_TAGLINE_SUB } from "../metric-copy";
 import { Logo } from "./Logo";
 
 export interface LoginPageProps {
