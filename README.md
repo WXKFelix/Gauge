@@ -1,5 +1,7 @@
 # Gauge
 
+> 量化人生 — *Quantify Life*
+
 A small real-time gauge dashboard built with **React**, **TypeScript**, and **Vite**.
 It renders a grid of SVG gauges (CPU, memory, network, temperature) whose values
 drift over time to simulate a live metrics feed.

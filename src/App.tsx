@@ -40,6 +40,7 @@ export default function App() {
     <main className="app">
       <header className="app-header">
         <h1>Gauge</h1>
+        <p className="tagline" lang="zh">量化人生</p>
         <p className="subtitle">Real-time metrics dashboard</p>
         <button
           className="toggle"

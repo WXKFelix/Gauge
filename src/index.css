@@ -35,6 +35,13 @@ body {
   color: transparent;
 }
 
+.tagline {
+  margin: 0.35rem 0 0;
+  font-size: 1.15rem;
+  letter-spacing: 0.35em;
+  color: #cbd5e1;
+}
+
 .subtitle {
   margin: 0.25rem 0 1.25rem;
   color: #94a3b8;
