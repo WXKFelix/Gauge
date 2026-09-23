@@ -4,6 +4,7 @@ import {
   DEFAULT_JOURNEY,
   addVisitedPoint,
   evaluateAdvisor,
+  resolveNodeTabAdvice,
   sortJourneyPoints,
 } from "./life-journey";
 import {
@@ -45,6 +46,15 @@ describe("life-journey", () => {
     const next = addVisitedPoint(DEFAULT_JOURNEY, "D · 测试", 2025);
     expect(next.points.some((p) => p.label.includes("D"))).toBe(true);
     expect(next.mostlyAtBirth).toBe(false);
+  });
+
+  it("resolveNodeTabAdvice returns key-node optimal at age 28", () => {
+    const snapshot = buildQuantifiedLifeSnapshot({
+      ...DEFAULT_QUANTIFIED_LIFE,
+      age: 28,
+    });
+    const bundle = resolveNodeTabAdvice({ snapshot, journey: DEFAULT_JOURNEY });
+    expect(bundle?.options[0]?.title).toMatch(/最优解/);
   });
 
   it("every rule builds at least two options", () => {

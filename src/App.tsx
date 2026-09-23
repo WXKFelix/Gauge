@@ -11,7 +11,7 @@ import { APP_MISSION, METRIC_HELP } from "./metric-copy";
 import type { FocusAreaId } from "./user-focus";
 import {
   DEFAULT_JOURNEY,
-  evaluateAdvisor,
+  resolveNodeTabAdvice,
   type LifeJourneyState,
 } from "./life-journey";
 import {
@@ -63,7 +63,7 @@ export default function App() {
   );
 
   const advisorBundle = useMemo(
-    () => evaluateAdvisor({ snapshot, journey }),
+    () => resolveNodeTabAdvice({ snapshot, journey }),
     [snapshot, journey]
   );
 
@@ -242,6 +242,7 @@ export default function App() {
           className="tab-panel"
         >
           <NodeAdvicePanel
+            age={snapshot.age}
             bundle={advisorBundle}
             onFeedback={(fb) => {
               setAdvisorFeedback((prev) => [

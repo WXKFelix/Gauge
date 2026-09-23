@@ -1,3 +1,4 @@
+import { buildKeyNodeAdvice } from "./life-key-nodes";
 import type { LifeStageId, QuantifiedLifeSnapshot } from "./quantified-life";
 
 export type LifePointKind = "birth" | "visited" | "planned";
@@ -19,30 +20,16 @@ export interface LifeJourneyState {
   mostlyAtBirth: boolean;
 }
 
-export type MetricEffect = "up" | "down" | "neutral";
-
-export type AdvisorMetricKey =
-  | "workload"
-  | "dopamineIndex"
-  | "assets"
-  | "wardrobeUtilization"
-  | "outfitSatisfaction";
-
-export interface NodeAdviceOption {
-  id: string;
-  title: string;
-  steps: string[];
-  effects: Partial<Record<AdvisorMetricKey, MetricEffect>>;
-  riskNote: string;
-}
-
-export interface NodeAdviceBundle {
-  id: string;
-  triggeredAt: string;
-  reason: string;
-  stageId: LifeStageId;
-  options: NodeAdviceOption[];
-}
+export type {
+  AdvisorMetricKey,
+  MetricEffect,
+  NodeAdviceBundle,
+  NodeAdviceOption,
+} from "./life-advice-types";
+import type {
+  NodeAdviceBundle,
+  NodeAdviceOption,
+} from "./life-advice-types";
 
 export interface AdvisorContext {
   snapshot: QuantifiedLifeSnapshot;
@@ -291,6 +278,7 @@ export const ADVISOR_RULES: AdvisorRule[] = [
   },
 ];
 
+/** Metric/stage rules (urgent imbalance, etc.) */
 export function evaluateAdvisor(ctx: AdvisorContext): NodeAdviceBundle | null {
   const matched = ADVISOR_RULES.filter((r) => r.match(ctx)).sort(
     (a, b) => b.priority - a.priority
@@ -299,7 +287,34 @@ export function evaluateAdvisor(ctx: AdvisorContext): NodeAdviceBundle | null {
   if (!rule) return null;
   const bundle = rule.build(ctx);
   if (bundle.options.length < 2) return null;
-  return bundle;
+  return withOptimalTier(bundle);
+}
+
+/**
+ * Life key-node advice: age-window milestones with a recommended 最优解.
+ * Shown when no urgent metric rule wins, or alongside on the nodes tab.
+ */
+export function evaluateKeyNodeAdvisor(
+  ctx: AdvisorContext
+): NodeAdviceBundle | null {
+  const bundle = buildKeyNodeAdvice(ctx);
+  if (!bundle || bundle.options.length < 2) return null;
+  return withOptimalTier(bundle);
+}
+
+/** Primary bundle for the nodes tab: urgent rules override key milestones. */
+export function resolveNodeTabAdvice(
+  ctx: AdvisorContext
+): NodeAdviceBundle | null {
+  return evaluateAdvisor(ctx) ?? evaluateKeyNodeAdvisor(ctx);
+}
+
+function withOptimalTier(bundle: NodeAdviceBundle): NodeAdviceBundle {
+  const options = bundle.options.map((opt, i) => ({
+    ...opt,
+    tier: opt.tier ?? (i === 0 ? ("optimal" as const) : ("alternative" as const)),
+  }));
+  return { ...bundle, options };
 }
 
 export function addVisitedPoint(
