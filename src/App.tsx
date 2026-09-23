@@ -1,22 +1,64 @@
 import { useEffect, useMemo, useState } from "react";
 import { Gauge } from "./components/Gauge";
+import { JourneyStrip } from "./components/JourneyStrip";
+import { NodeAdvicePanel } from "./components/NodeAdvicePanel";
+import {
+  DEFAULT_JOURNEY,
+  evaluateAdvisor,
+  type LifeJourneyState,
+} from "./life-journey";
 import {
   DEFAULT_QUANTIFIED_LIFE,
   buildQuantifiedLifeSnapshot,
   driftMetric,
   type QuantifiedLifeInputs,
 } from "./quantified-life";
+import {
+  loadPersistedState,
+  savePersistedState,
+  type PersistedAppState,
+} from "./storage";
 
 export default function App() {
-  const [inputs, setInputs] = useState<QuantifiedLifeInputs>(
-    DEFAULT_QUANTIFIED_LIFE
+  const [inputs, setInputs] = useState<QuantifiedLifeInputs>(() =>
+    typeof window !== "undefined"
+      ? loadPersistedState().inputs
+      : DEFAULT_QUANTIFIED_LIFE
+  );
+  const [journey, setJourney] = useState<LifeJourneyState>(() =>
+    typeof window !== "undefined"
+      ? loadPersistedState().journey
+      : {
+          mostlyAtBirth: DEFAULT_JOURNEY.mostlyAtBirth,
+          points: DEFAULT_JOURNEY.points.map((p) => ({ ...p })),
+        }
+  );
+  const [advisorFeedback, setAdvisorFeedback] = useState<
+    PersistedAppState["advisorFeedback"]
+  >(() =>
+    typeof window !== "undefined" ? loadPersistedState().advisorFeedback : []
   );
   const [live, setLive] = useState(true);
+  const [feedbackToast, setFeedbackToast] = useState<string | null>(null);
 
   const snapshot = useMemo(
     () => buildQuantifiedLifeSnapshot(inputs),
     [inputs]
   );
+
+  const advisorBundle = useMemo(
+    () => evaluateAdvisor({ snapshot, journey }),
+    [snapshot, journey]
+  );
+
+  useEffect(() => {
+    savePersistedState({
+      version: 1,
+      inputs,
+      journey,
+      advisorFeedback,
+    });
+  }, [inputs, journey, advisorFeedback]);
 
   useEffect(() => {
     if (!live) return;
@@ -32,6 +74,12 @@ export default function App() {
     return () => clearInterval(id);
   }, [live]);
 
+  useEffect(() => {
+    if (!feedbackToast) return;
+    const t = setTimeout(() => setFeedbackToast(null), 2400);
+    return () => clearTimeout(t);
+  }, [feedbackToast]);
+
   const gauges = [
     {
       key: "assets",
@@ -40,6 +88,7 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "分",
+      warn: false,
     },
     {
       key: "workload",
@@ -48,6 +97,7 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "分",
+      warn: snapshot.workload >= 70,
     },
     {
       key: "dopamine",
@@ -56,6 +106,7 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "分",
+      warn: snapshot.dopamineIndex < 40,
     },
     {
       key: "wardrobe",
@@ -64,6 +115,7 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "%",
+      warn: false,
     },
     {
       key: "outfit",
@@ -72,6 +124,7 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "分",
+      warn: false,
     },
     {
       key: "meaning",
@@ -80,15 +133,18 @@ export default function App() {
       min: 0,
       max: 100,
       unit: "分",
+      warn: false,
     },
   ] as const;
 
   return (
     <main className="app">
       <header className="app-header">
-        <p className="eyebrow">cloudWardrobe-ui → Gauge</p>
+        <p className="eyebrow">量化人生 APP · Gauge Web MVP</p>
         <h1>量化人生</h1>
-        <p className="subtitle">资产、工作量与衣橱生活的可视化仪表盘</p>
+        <p className="subtitle">
+          人生坐标 A→B→C 与资产、工作量仪表盘 · 数据保存在本机
+        </p>
         <button
           className="toggle"
           type="button"
@@ -99,8 +155,27 @@ export default function App() {
         </button>
       </header>
 
+      <JourneyStrip journey={journey} onJourneyChange={setJourney} />
+
+      <NodeAdvicePanel
+        bundle={advisorBundle}
+        onFeedback={(fb) => {
+          setAdvisorFeedback((prev) => [
+            ...prev,
+            { ...fb, at: new Date().toISOString() },
+          ]);
+          setFeedbackToast(fb.helpful ? "已记录：这条建议有帮助" : "已记录：暂不采纳");
+        }}
+      />
+
+      {feedbackToast ? (
+        <div className="toast" role="status">
+          {feedbackToast}
+        </div>
+      ) : null}
+
       <section className="concept-panel" aria-labelledby="concept-heading">
-        <h2 id="concept-heading">量化人生概念</h2>
+        <h2 id="concept-heading">阶段与指标</h2>
         <p>
           多巴胺指数 ∝ <strong>资产 − 工作量</strong>；综合意义分结合衣橱利用率与穿搭满意度。
         </p>
@@ -111,7 +186,24 @@ export default function App() {
           </div>
           <div>
             <dt>年龄</dt>
-            <dd>{snapshot.age} 岁</dd>
+            <dd>
+              <label className="age-input">
+                <span className="sr-only">年龄</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={inputs.age}
+                  onChange={(e) =>
+                    setInputs((prev) => ({
+                      ...prev,
+                      age: Number(e.target.value) || 0,
+                    }))
+                  }
+                />
+                岁
+              </label>
+            </dd>
           </div>
           <div>
             <dt>阶段进度</dt>
@@ -119,7 +211,7 @@ export default function App() {
           </div>
         </dl>
         <p className="concept-link">
-          详见 <code>docs/量化人生概念.md</code>
+          文档：<code>docs/量化人生APP-UI可视化图鉴.md</code>
         </p>
       </section>
 
@@ -132,6 +224,7 @@ export default function App() {
             min={m.min}
             max={m.max}
             unit={m.unit}
+            warn={m.warn}
           />
         ))}
       </section>
