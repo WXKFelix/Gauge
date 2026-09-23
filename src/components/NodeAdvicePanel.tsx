@@ -10,7 +10,7 @@ const METRIC_LABEL: Record<string, string> = {
   workload: "工作量",
   dopamineIndex: "多巴胺",
   assets: "资产",
-  wardrobeUtilization: "衣橱利用",
+  wardrobeUtilization: "生活利用",
   outfitSatisfaction: "穿搭满意",
 };
 

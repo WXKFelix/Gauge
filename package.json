@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Gauge - a small real-time gauge dashboard built with React, TypeScript and Vite.",
+  "description": "量化人生 - life quantification dashboard (React, TypeScript, Vite).",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc --noEmit && vite build",

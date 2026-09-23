@@ -139,7 +139,7 @@ block-beta
     dopamine["多巴胺"]
   end
   block:row2
-    wardrobe["衣橱利用率"]
+    wardrobe["生活利用率"]
     outfit["穿搭满意度"]
     meaning["人生意义分"]
   end

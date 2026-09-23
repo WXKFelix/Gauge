@@ -162,11 +162,11 @@ export const ADVISOR_RULES: AdvisorRule[] = [
           },
           {
             id: "wardrobe-ritual",
-            title: "方案 C · 衣橱仪式",
+            title: "方案 C · 生活仪式",
             steps: [
-              "整理 7 套一周胶囊搭配",
-              "标记 30 天未穿单品",
-              "每天出门前 1 分钟穿搭满意度自评",
+              "列出 7 项本周必做的小习惯",
+              "标记 30 天未推进的计划项",
+              "每天 1 分钟生活利用率与穿搭满意度自评",
             ],
             effects: {
               wardrobeUtilization: "up",

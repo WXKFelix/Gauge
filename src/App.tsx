@@ -118,7 +118,7 @@ export default function App() {
     },
     {
       key: "wardrobe",
-      label: "衣橱利用率",
+      label: "生活利用率",
       value: snapshot.wardrobeUtilization,
       min: 0,
       max: 100,
@@ -252,7 +252,7 @@ export default function App() {
           <section className="concept-panel" aria-labelledby="concept-heading">
             <h2 id="concept-heading">阶段与指标</h2>
             <p>
-              多巴胺 ∝ <strong>资产 − 工作量</strong>；意义分结合衣橱与穿搭。
+              多巴胺 ∝ <strong>资产 − 工作量</strong>；意义分结合生活利用率与穿搭。
             </p>
             <dl className="stage-meta">
               <div>

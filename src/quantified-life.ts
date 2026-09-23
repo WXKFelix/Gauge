@@ -29,7 +29,7 @@ export interface QuantifiedLifeInputs {
   assets: number;
   /** Workload / effort index 0–100. */
   workload: number;
-  /** Wardrobe utilization 0–100 (items worn vs idle). */
+  /** Life utilization 0–100 (self-rated daily/resource use). */
   wardrobeUtilization: number;
   /** Outfit satisfaction 0–100. */
   outfitSatisfaction: number;

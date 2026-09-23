@@ -154,7 +154,7 @@ export type AdvisorRule = {
 
 | rule id | 条件 | 输出概要 |
 |---------|------|----------|
-| `high-workload-low-dopamine` | workload≥70 且 dopamine&lt;40 | 边界实验 / 短途位移 / 衣橱仪式 |
+| `high-workload-low-dopamine` | workload≥70 且 dopamine&lt;40 | 边界实验 / 短途位移 / 生活仪式 |
 | `stage-intern` | stage=intern | 技能资产 vs 探索 B 点 |
 | `stage-retire-soon` | age≥58 && stage=work | 退休坐标规划、工作量下行 |
 | `mostly-at-birth` | mostlyAtBirth && points.length===1 | 深化 A 点关系与满意度，非「必须离开」 |
@@ -212,11 +212,6 @@ REST 风格示例，非 MVP 范围。
 | CRUD | `/v1/me/points` | 人生坐标 |
 | GET | `/v1/me/advisor` | 服务端规则（需版本号） |
 | POST | `/v1/me/advisor/:id/feedback` | helpful / dismiss |
-
-**cloudWardrobe 集成**（v2）：
-
-- Webhook 或 pull：`wardrobeUtilization` 自动更新。  
-- OAuth scope：`wardrobe.read`  
 
 ---
 
@@ -314,7 +309,6 @@ Cloud Agent：见 `.cursor/environment.json`（`npm ci` + `npm run dev`）。
 ### Phase 3（v2）
 
 - [ ] 账号与同步 API  
-- [ ] cloudWardrobe 客户端  
 
 ---
 
@@ -355,7 +349,7 @@ npm run typecheck
 | A/B/C 坐标 | P-MAP | `LifePoint`, `JourneyStrip` |
 | 节点最优解（参考） | P-NODES | `AdvisorRule`, `NodeAdvicePanel` |
 | 意义分权重 | P-SETTINGS | `computeMeaningScore(w)` |
-| 衣橱指标 | P-HOME | 输入字段，v2 同步 job |
+| 生活利用率 | P-HOME | 输入字段，v2 可选云同步 |
 
 ---
 
