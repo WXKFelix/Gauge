@@ -8,5 +8,6 @@ export const METRIC_HELP: Record<string, string> = {
   meaning: "综合参考分，权重可调；用来对话自己，不是用来和别人比。",
 };
 
+/** 登录页与品牌一句话（精简，含义完整） */
 export const APP_MISSION =
-  "用数据帮助每个人更好地管理和提升人生——只呈现对你有用、你也感兴趣的内容。";
+  "数据帮你管理、提升人生，只呈现对你有用、你也关心的内容。";
