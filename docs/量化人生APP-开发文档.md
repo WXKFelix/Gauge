@@ -26,13 +26,14 @@
   src/
     quantified-life.ts           # 核心指标与阶段
     quantified-life.test.ts
-    life-journey.ts              # [规划] 坐标 A/B/C 与节点规则
-    life-journey.test.ts         # [规划]
+    life-journey.ts              # 坐标 A/B/C 与节点规则
+    life-journey.test.ts
+    storage.ts                   # localStorage 持久化
     components/
       Gauge.tsx
       Gauge.test.tsx
-      JourneyStrip.tsx           # [规划]
-      NodeAdvicePanel.tsx        # [规划]
+      JourneyStrip.tsx
+      NodeAdvicePanel.tsx
     App.tsx
     main.tsx
     index.css
@@ -299,10 +300,10 @@ Cloud Agent：见 `.cursor/environment.json`（`npm ci` + `npm run dev`）。
 
 ### Phase 1（MVP UI 扩展）
 
-- [ ] 实现 `life-journey.ts` + 规则 + 测试  
-- [ ] `JourneyStrip` + `NodeAdvicePanel`  
-- [ ] `App.tsx` 集成；localStorage 持久化  
-- [ ] README 链接新文档  
+- [x] 实现 `life-journey.ts` + 规则 + 测试  
+- [x] `JourneyStrip` + `NodeAdvicePanel`  
+- [x] `App.tsx` 集成；localStorage 持久化  
+- [x] [UI 可视化图鉴](./量化人生APP-UI可视化图鉴.md) + `scripts/capture-ui.mjs`  
 
 ### Phase 2（v1）
 

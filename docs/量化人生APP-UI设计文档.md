@@ -286,8 +286,9 @@ flowchart TD
 | 首页 Header + Toggle | `App.tsx` | 已有 |
 | 概念面板 | `App.tsx` | 已有 |
 | 仪表网格 | `Gauge.tsx` × 6 | 已有 |
-| 坐标条带 | 待增 `JourneyStrip.tsx` | 开发文档 §4 |
-| 节点卡片 | 待增 `NodeAdvicePanel.tsx` | 开发文档 §4 |
+| 坐标条带 | `JourneyStrip.tsx` | 已实现 |
+| 节点卡片 | `NodeAdvicePanel.tsx` | 已实现 |
+| 可视化图鉴 | [量化人生APP-UI可视化图鉴.md](./量化人生APP-UI可视化图鉴.md) | 实机截图 + Mermaid |
 
 UI 变更时请更新上表并通知产品文档 KPI 是否受影响。
 

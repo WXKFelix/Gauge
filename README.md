@@ -11,6 +11,7 @@
 | 产品文档 | [docs/量化人生APP-产品文档.md](docs/量化人生APP-产品文档.md) |
 | UI 设计文档 | [docs/量化人生APP-UI设计文档.md](docs/量化人生APP-UI设计文档.md) |
 | 开发文档 | [docs/量化人生APP-开发文档.md](docs/量化人生APP-开发文档.md) |
+| UI 可视化图鉴 | [docs/量化人生APP-UI可视化图鉴.md](docs/量化人生APP-UI可视化图鉴.md) |
 
 ## Tech stack
 
