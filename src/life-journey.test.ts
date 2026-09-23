@@ -4,6 +4,7 @@ import {
   DEFAULT_JOURNEY,
   addVisitedPoint,
   evaluateAdvisor,
+  resolveAllNodeAdvice,
   resolveNodeTabAdvice,
   sortJourneyPoints,
 } from "./life-journey";
@@ -46,6 +47,19 @@ describe("life-journey", () => {
     const next = addVisitedPoint(DEFAULT_JOURNEY, "D · 测试", 2025);
     expect(next.points.some((p) => p.label.includes("D"))).toBe(true);
     expect(next.mostlyAtBirth).toBe(false);
+  });
+
+  it("resolveAllNodeAdvice separates urgent and milestone", () => {
+    const snapshot = buildQuantifiedLifeSnapshot({
+      ...DEFAULT_QUANTIFIED_LIFE,
+      age: 28,
+      workload: 75,
+      assets: 45,
+    });
+    const all = resolveAllNodeAdvice({ snapshot, journey: DEFAULT_JOURNEY });
+    expect(all.urgent).not.toBeNull();
+    expect(all.milestone).not.toBeNull();
+    expect(all.primary?.id).toBe(all.urgent?.id);
   });
 
   it("resolveNodeTabAdvice returns key-node optimal at age 28", () => {

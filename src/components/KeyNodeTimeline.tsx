@@ -12,6 +12,11 @@ export function KeyNodeTimeline({ age }: KeyNodeTimelineProps) {
   const active = getActiveKeyNode(age);
   const upcoming = getUpcomingKeyNode(age);
 
+  const isNodeActive = (node: (typeof LIFE_KEY_NODES)[number]) => {
+    if (active?.id === node.id) return true;
+    return age >= node.ageMin && age <= node.ageMax;
+  };
+
   return (
     <section className="key-node-timeline" aria-labelledby="key-node-timeline-h">
       <h3 id="key-node-timeline-h">人生关键节点</h3>
@@ -20,22 +25,29 @@ export function KeyNodeTimeline({ age }: KeyNodeTimelineProps) {
       </p>
       <ol className="key-node-list">
         {LIFE_KEY_NODES.map((node) => {
-          const isActive = active?.id === node.id;
+          const isActive = isNodeActive(node);
+          const isPrimary = active?.id === node.id;
           const isPast = age > node.ageMax;
           return (
             <li
               key={node.id}
               className={`key-node-item${
                 isActive ? " key-node-item--active" : ""
-              }${isPast ? " key-node-item--past" : ""}`}
+              }${isPrimary ? " key-node-item--primary" : ""}${
+                isPast ? " key-node-item--past" : ""
+              }`}
             >
               <span className="key-node-age">
                 {node.ageMin}–{node.ageMax} 岁
               </span>
               <span className="key-node-label">{node.label}</span>
               <span className="key-node-tag">{node.tagline}</span>
-              {isActive ? (
-                <span className="key-node-badge">当前窗口</span>
+              {isPrimary ? (
+                <span className="key-node-badge">主窗口</span>
+              ) : isActive ? (
+                <span className="key-node-badge key-node-badge--secondary">
+                  重叠
+                </span>
               ) : null}
             </li>
           );

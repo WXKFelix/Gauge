@@ -16,23 +16,18 @@ const METRIC_LABEL: Record<string, string> = {
   outfitSatisfaction: "穿搭满意",
 };
 
-export interface NodeAdvicePanelProps {
-  bundle: NodeAdviceBundle | null;
+function AdviceBlock({
+  bundle,
+  onFeedback,
+  heading,
+}: {
+  bundle: NodeAdviceBundle;
   onFeedback: (feedback: Omit<AdvisorFeedback, "at">) => void;
-  age: number;
-}
-
-export function NodeAdvicePanel({ bundle, onFeedback, age }: NodeAdvicePanelProps) {
+  heading?: string;
+}) {
   return (
-    <section className="advisor-panel" aria-labelledby="advisor-heading">
-      <h2 id="advisor-heading">关键节点 · 最优解</h2>
-      <KeyNodeTimeline age={age} />
-      {!bundle ? (
-        <p className="advisor-empty" role="status">
-          当前年龄窗口暂无匹配方案。可调整年龄或添加「计划坐标」以触发换城类节点；若工作量长期偏高，也会优先给出紧急最优解。
-        </p>
-      ) : (
-        <>
+    <div className="advice-block">
+      {heading ? <h3 className="advice-block-title">{heading}</h3> : null}
       {bundle.nodeLabel ? (
         <p className="advisor-node-label">{bundle.nodeLabel}</p>
       ) : null}
@@ -48,7 +43,7 @@ export function NodeAdvicePanel({ bundle, onFeedback, age }: NodeAdvicePanelProp
             {opt.tier === "optimal" ? (
               <span className="advisor-optimal-badge">推荐最优解</span>
             ) : null}
-            <h3>{opt.title}</h3>
+            <h4 className="advisor-card-title">{opt.title}</h4>
             <ol>
               {opt.steps.map((step, i) => (
                 <li key={i}>{step}</li>
@@ -96,9 +91,55 @@ export function NodeAdvicePanel({ bundle, onFeedback, age }: NodeAdvicePanelProp
           </li>
         ))}
       </ul>
-      <p className="advisor-disclaimer">
-        「最优解」指在当前年龄、阶段与自评数据下的推荐路径，仍非唯一标准答案；不替代专业心理、医疗或财务建议。
-      </p>
+    </div>
+  );
+}
+
+export interface NodeAdvicePanelProps {
+  primary: NodeAdviceBundle | null;
+  milestone: NodeAdviceBundle | null;
+  urgent: NodeAdviceBundle | null;
+  onFeedback: (feedback: Omit<AdvisorFeedback, "at">) => void;
+  age: number;
+}
+
+export function NodeAdvicePanel({
+  primary,
+  milestone,
+  urgent,
+  onFeedback,
+  age,
+}: NodeAdvicePanelProps) {
+  const showMilestoneAlso =
+    urgent != null &&
+    milestone != null &&
+    urgent.id !== milestone.id;
+
+  return (
+    <section className="advisor-panel" aria-labelledby="advisor-heading">
+      <h2 id="advisor-heading">关键节点 · 最优解</h2>
+      <KeyNodeTimeline age={age} />
+      {!primary ? (
+        <p className="advisor-empty" role="status">
+          当前暂无方案。请在「指标」调节年龄或自评滑块；换城类节点需添加计划坐标。
+        </p>
+      ) : (
+        <>
+          <AdviceBlock
+            bundle={primary}
+            onFeedback={onFeedback}
+            heading={urgent ? "优先 · 状态预警最优解" : "当前窗口 · 人生节点最优解"}
+          />
+          {showMilestoneAlso && milestone ? (
+            <AdviceBlock
+              bundle={milestone}
+              onFeedback={onFeedback}
+              heading="并行参考 · 年龄关键节点"
+            />
+          ) : null}
+          <p className="advisor-disclaimer">
+            「最优解」为当前数据下的推荐路径，非唯一标准答案；不替代专业心理、医疗或财务建议。
+          </p>
         </>
       )}
     </section>

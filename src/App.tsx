@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { AppTabBar, type AppTabId } from "./components/AppTabBar";
 import { Gauge } from "./components/Gauge";
 import { HeroMeaningCard } from "./components/HeroMeaningCard";
+import { HomeNodeTeaser } from "./components/HomeNodeTeaser";
 import { JourneyStrip } from "./components/JourneyStrip";
+import { MetricSliders } from "./components/MetricSliders";
 import { NodeAdvicePanel } from "./components/NodeAdvicePanel";
 import { FocusPicker } from "./components/FocusPicker";
 import { QuickMetricRow } from "./components/QuickMetricRow";
@@ -11,7 +13,7 @@ import { APP_MISSION, METRIC_HELP } from "./metric-copy";
 import type { FocusAreaId } from "./user-focus";
 import {
   DEFAULT_JOURNEY,
-  resolveNodeTabAdvice,
+  resolveAllNodeAdvice,
   type LifeJourneyState,
 } from "./life-journey";
 import {
@@ -46,7 +48,7 @@ export default function App() {
   >(() =>
     typeof window !== "undefined" ? loadPersistedState().advisorFeedback : []
   );
-  const [live, setLive] = useState(true);
+  const [live, setLive] = useState(false);
   const [feedbackToast, setFeedbackToast] = useState<string | null>(null);
   const [focusAreas, setFocusAreas] = useState<FocusAreaId[]>(() =>
     typeof window !== "undefined"
@@ -62,8 +64,8 @@ export default function App() {
     [inputs]
   );
 
-  const advisorBundle = useMemo(
-    () => resolveNodeTabAdvice({ snapshot, journey }),
+  const nodeAdvice = useMemo(
+    () => resolveAllNodeAdvice({ snapshot, journey }),
     [snapshot, journey]
   );
 
@@ -195,7 +197,7 @@ export default function App() {
           onClick={() => setLive((v) => !v)}
           aria-pressed={live}
         >
-          {live ? "暂停" : "恢复"}
+          {live ? "暂停模拟" : "演示漂移"}
         </button>
       </header>
 
@@ -217,6 +219,10 @@ export default function App() {
           />
           <FocusPicker selected={focusAreas} onChange={setFocusAreas} />
           <QuickMetricRow items={quickMetrics} />
+          <HomeNodeTeaser
+            bundle={nodeAdvice.primary}
+            onOpenNodes={() => setTab("nodes")}
+          />
           <p className="home-hint">
             {focusAreas.includes("relationship")
               ? "「坐标」记录你去过哪里、谁在那里；「节点」在关键阶段给出可执行参考。"
@@ -243,7 +249,9 @@ export default function App() {
         >
           <NodeAdvicePanel
             age={snapshot.age}
-            bundle={advisorBundle}
+            primary={nodeAdvice.primary}
+            urgent={nodeAdvice.urgent}
+            milestone={nodeAdvice.milestone}
             onFeedback={(fb) => {
               setAdvisorFeedback((prev) => [
                 ...prev,
@@ -302,6 +310,8 @@ export default function App() {
             </dl>
           </section>
 
+          <MetricSliders inputs={inputs} onChange={setInputs} />
+
           <section className="gauge-grid gauge-grid--metrics" aria-label="人生指标">
             {gauges.map((m) => (
               <div key={m.key} className="gauge-card-wrap">
@@ -330,7 +340,7 @@ export default function App() {
       <AppTabBar
         active={tab}
         onChange={setTab}
-        nodeBadge={advisorBundle != null}
+        nodeBadge={nodeAdvice.primary != null}
       />
     </div>
   );

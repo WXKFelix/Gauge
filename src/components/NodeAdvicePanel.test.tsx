@@ -27,14 +27,28 @@ const sampleBundle = {
 
 describe("NodeAdvicePanel", () => {
   it("shows empty state when no bundle", () => {
-    render(<NodeAdvicePanel bundle={null} onFeedback={vi.fn()} age={28} />);
-    expect(screen.getByText(/当前年龄窗口暂无匹配方案/)).toBeInTheDocument();
+    render(
+      <NodeAdvicePanel
+        primary={null}
+        urgent={null}
+        milestone={null}
+        onFeedback={vi.fn()}
+        age={28}
+      />
+    );
+    expect(screen.getByText(/当前暂无方案/)).toBeInTheDocument();
   });
 
   it("calls onFeedback when helpful clicked", () => {
     const onFeedback = vi.fn();
     render(
-      <NodeAdvicePanel bundle={sampleBundle} onFeedback={onFeedback} age={28} />
+      <NodeAdvicePanel
+        primary={sampleBundle}
+        urgent={null}
+        milestone={sampleBundle}
+        onFeedback={onFeedback}
+        age={28}
+      />
     );
     fireEvent.click(screen.getAllByRole("button", { name: "有帮助" })[0]!);
     expect(onFeedback).toHaveBeenCalledWith({

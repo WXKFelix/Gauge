@@ -123,7 +123,7 @@ export const ADVISOR_RULES: AdvisorRule[] = [
         [
           {
             id: "boundary",
-            title: "方案 A · 边界实验",
+            title: "最优解 · 边界实验",
             steps: [
               "列出未来 4 周可拒绝的一类低价值加班",
               "每周保留 2 晚不安排事务",
@@ -302,11 +302,30 @@ export function evaluateKeyNodeAdvisor(
   return withOptimalTier(bundle);
 }
 
-/** Primary bundle for the nodes tab: urgent rules override key milestones. */
+export interface ResolvedNodeAdvice {
+  /** 紧急/指标触发的最优解（优先展示） */
+  urgent: NodeAdviceBundle | null;
+  /** 年龄关键节点最优解 */
+  milestone: NodeAdviceBundle | null;
+  /** 节点 Tab 主卡片：紧急优先，否则里程碑 */
+  primary: NodeAdviceBundle | null;
+}
+
+export function resolveAllNodeAdvice(ctx: AdvisorContext): ResolvedNodeAdvice {
+  const urgent = evaluateAdvisor(ctx);
+  const milestone = evaluateKeyNodeAdvisor(ctx);
+  return {
+    urgent,
+    milestone,
+    primary: urgent ?? milestone,
+  };
+}
+
+/** @deprecated prefer resolveAllNodeAdvice */
 export function resolveNodeTabAdvice(
   ctx: AdvisorContext
 ): NodeAdviceBundle | null {
-  return evaluateAdvisor(ctx) ?? evaluateKeyNodeAdvisor(ctx);
+  return resolveAllNodeAdvice(ctx).primary;
 }
 
 function withOptimalTier(bundle: NodeAdviceBundle): NodeAdviceBundle {

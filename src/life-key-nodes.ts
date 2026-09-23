@@ -1,4 +1,4 @@
-import type { LifeStageId, QuantifiedLifeSnapshot } from "./quantified-life";
+import type { LifeStageId } from "./quantified-life";
 import type { NodeAdviceBundle, NodeAdviceOption } from "./life-advice-types";
 import type { AdvisorContext } from "./life-journey";
 
