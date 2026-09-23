@@ -4,6 +4,14 @@
 
 概念说明见 [docs/量化人生概念.md](docs/量化人生概念.md)。
 
+**量化人生 APP** 完整设计（独立文档）：
+
+| 文档 | 路径 |
+|------|------|
+| 产品文档 | [docs/量化人生APP-产品文档.md](docs/量化人生APP-产品文档.md) |
+| UI 设计文档 | [docs/量化人生APP-UI设计文档.md](docs/量化人生APP-UI设计文档.md) |
+| 开发文档 | [docs/量化人生APP-开发文档.md](docs/量化人生APP-开发文档.md) |
+
 ## Tech stack
 
 - [Vite](https://vitejs.dev/) 5 for dev server and bundling
