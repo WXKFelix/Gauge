@@ -37,7 +37,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
         <form className="login-form" onSubmit={submit}>
           <label className="login-field">
-            <span>怎么称呼你</span>
+            <span>怎么称呼您</span>
             <input
               type="text"
               placeholder="昵称或姓名"
