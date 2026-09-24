@@ -426,13 +426,41 @@ body::before {
 
 .tab-bar-item--active {
   color: var(--text-primary);
-  background: rgba(56, 189, 248, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(56, 189, 248, 0.18),
+    rgba(56, 189, 248, 0.06)
+  );
+  box-shadow: inset 0 1px 0 rgba(34, 211, 238, 0.25);
 }
 
 .tab-bar-icon {
   position: relative;
-  font-size: 1.15rem;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.tab-icon {
+  display: block;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.tab-bar-item:active .tab-icon {
+  transform: scale(0.92);
+}
+
+.tab-icon--active {
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.45));
+}
+
+.tab-bar-item--active .tab-bar-label {
+  color: #7dd3fc;
+  font-weight: 600;
 }
 
 .tab-bar-badge {

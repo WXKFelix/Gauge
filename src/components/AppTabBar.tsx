@@ -1,10 +1,12 @@
+import { TabIcon } from "./TabIcon";
+
 export type AppTabId = "home" | "journey" | "nodes" | "metrics";
 
-const TABS: { id: AppTabId; label: string; icon: string }[] = [
-  { id: "home", label: "首页", icon: "⌂" },
-  { id: "journey", label: "坐标", icon: "◎" },
-  { id: "nodes", label: "节点", icon: "◈" },
-  { id: "metrics", label: "指标", icon: "◔" },
+const TABS: { id: AppTabId; label: string }[] = [
+  { id: "home", label: "首页" },
+  { id: "journey", label: "坐标" },
+  { id: "nodes", label: "节点" },
+  { id: "metrics", label: "指标" },
 ];
 
 export interface AppTabBarProps {
@@ -31,7 +33,7 @@ export function AppTabBar({ active, onChange, nodeBadge }: AppTabBarProps) {
               onClick={() => onChange(tab.id)}
             >
               <span className="tab-bar-icon" aria-hidden>
-                {tab.icon}
+                <TabIcon id={tab.id} active={selected} />
                 {tab.id === "nodes" && nodeBadge ? (
                   <span className="tab-bar-badge" aria-label="有新建议" />
                 ) : null}
