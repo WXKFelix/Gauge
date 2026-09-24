@@ -31,17 +31,16 @@ export function LoginPage({ onLogin }: LoginPageProps) {
         <Logo size={96} showWordmark className="logo-brand--center login-hero-logo" />
 
         <form className="login-form" onSubmit={submit}>
-          <label className="login-field">
-            <span>怎么称呼您</span>
-            <input
-              type="text"
-              placeholder="昵称或姓名"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              autoComplete="nickname"
-              maxLength={24}
-            />
-          </label>
+          <input
+            className="login-input"
+            type="text"
+            placeholder="昵称或姓名"
+            aria-label="昵称或姓名"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="nickname"
+            maxLength={24}
+          />
           <button
             type="submit"
             className="login-submit"
@@ -50,10 +49,6 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             {loading ? "正在进入…" : "进入 BEARING"}
           </button>
         </form>
-
-        <p className="login-foot">
-          数据保存在本机 · 无需注册，打开即用
-        </p>
       </main>
     </div>
   );

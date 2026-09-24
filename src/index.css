@@ -1412,15 +1412,7 @@ body::before {
   gap: 1rem;
 }
 
-.login-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.login-field input {
+.login-input {
   padding: 0.75rem 1rem;
   border-radius: 12px;
   border: 1px solid var(--border-strong);
@@ -1429,7 +1421,7 @@ body::before {
   font-size: 16px;
 }
 
-.login-field input:focus {
+.login-input:focus {
   outline: none;
   border-color: #38bdf8;
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
@@ -1463,13 +1455,6 @@ body::before {
   50% {
     background-position: 100% 50%;
   }
-}
-
-.login-foot {
-  margin: 1.25rem 0 0;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--text-muted);
 }
 
 /* —— Home welcome —— */
