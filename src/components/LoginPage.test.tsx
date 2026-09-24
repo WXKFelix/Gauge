@@ -10,7 +10,7 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByPlaceholderText("昵称或姓名"), {
       target: { value: "小明" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "进入量化人生" }));
+    fireEvent.click(screen.getByRole("button", { name: "进入 Gauge" }));
     vi.advanceTimersByTime(600);
     expect(onLogin).toHaveBeenCalled();
     vi.useRealTimers();

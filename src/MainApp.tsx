@@ -193,7 +193,7 @@ export function MainApp({ session, onLogout }: MainAppProps) {
         <div className="app-topbar-brand">
           <Logo size={40} />
           <div>
-            <p className="app-topbar-title">量化人生</p>
+            <p className="app-topbar-title">Gauge</p>
             <p className="app-topbar-sub">{session.displayName}</p>
           </div>
         </div>

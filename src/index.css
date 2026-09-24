@@ -1313,9 +1313,9 @@ body::before {
 
 .logo-wordmark-title {
   display: block;
-  font-size: 1.65rem;
+  font-size: 1.85rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   background: linear-gradient(90deg, #38bdf8, #c084fc);
   -webkit-background-clip: text;
   background-clip: text;
