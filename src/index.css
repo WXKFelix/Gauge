@@ -1313,21 +1313,13 @@ body::before {
 
 .logo-wordmark-title {
   display: block;
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   background: linear-gradient(90deg, #38bdf8, #c084fc);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-.logo-wordmark-sub {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 /* —— Login —— */

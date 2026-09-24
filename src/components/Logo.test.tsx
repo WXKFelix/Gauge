@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 describe("Logo", () => {
   it("renders wordmark when requested", () => {
     render(<Logo showWordmark />);
-    expect(screen.getByText("Gauge")).toBeInTheDocument();
+    expect(screen.getByText("BEARING")).toBeInTheDocument();
+    expect(screen.queryByText(/Quantified Life/i)).not.toBeInTheDocument();
   });
 });

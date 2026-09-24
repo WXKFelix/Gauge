@@ -1,6 +1,6 @@
-# Gauge · Quantified Life
+# BEARING
 
-**Gauge**（朗朗上口的品牌名）是用数据帮助每个人管理和提升人生的 Web/App 客户端（React、TypeScript、Vite）——仪表盘展示用户关心的维度，并说明每项指标「为何有用」。
+**BEARING** 是用数据帮助每个人管理和提升人生的 Web/App 客户端（React、TypeScript、Vite）——仪表盘展示用户关心的维度，并说明每项指标「为何有用」。
 
 概念说明见 [docs/量化人生概念.md](docs/量化人生概念.md)。
 

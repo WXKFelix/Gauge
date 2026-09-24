@@ -52,7 +52,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             className="login-submit"
             disabled={loading}
           >
-            {loading ? "正在进入…" : "进入 Gauge"}
+            {loading ? "正在进入…" : "进入 BEARING"}
           </button>
         </form>
 

@@ -6,7 +6,7 @@ export interface LogoProps {
   className?: string;
 }
 
-/** Brand mark: life arc + balance needle (Gauge). */
+/** Brand mark: life arc + balance needle (BEARING). */
 export function Logo({
   size = 48,
   showWordmark = false,
@@ -17,7 +17,7 @@ export function Logo({
   return (
     <div
       className={`logo-brand${className ? ` ${className}` : ""}`}
-      aria-label="Gauge"
+      aria-label="BEARING"
     >
       <svg
         width={size}
@@ -78,8 +78,7 @@ export function Logo({
       </svg>
       {showWordmark ? (
         <div className="logo-wordmark">
-          <span className="logo-wordmark-title">Gauge</span>
-          <span className="logo-wordmark-sub">Quantified Life</span>
+          <span className="logo-wordmark-title">BEARING</span>
         </div>
       ) : null}
     </div>

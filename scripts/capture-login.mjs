@@ -8,7 +8,7 @@ await page.screenshot({
   fullPage: true,
 });
 await page.getByPlaceholder("昵称或姓名").fill("小明");
-await page.getByRole("button", { name: "进入 Gauge" }).click();
+await page.getByRole("button", { name: "进入 BEARING" }).click();
 await page.waitForTimeout(700);
 await page.screenshot({
   path: "/opt/cursor/artifacts/quantified-life-home-after-login.png",
