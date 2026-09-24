@@ -7,9 +7,3 @@ export const METRIC_HELP: Record<string, string> = {
   outfitSatisfaction: "日常自我呈现与出门状态，连接「今天过得像不像自己」。",
   meaning: "综合参考分，权重可调；用来对话自己，不是用来和别人比。",
 };
-
-/** 登录页主副标语（与产品初心：数据管理人生、节点有的放矢、内容有用且合意） */
-export const LOGIN_TAGLINE_MAIN = "用数据帮您理清人生，关键处有方向";
-export const LOGIN_TAGLINE_SUB = "只呈现对您有用、您也关心的内容";
-
-export const APP_MISSION = `${LOGIN_TAGLINE_MAIN}，${LOGIN_TAGLINE_SUB}`;
