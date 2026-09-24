@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createSession, saveSession, type UserSession } from "../auth";
-import { LOGIN_TAGLINE_MAIN, LOGIN_TAGLINE_SUB } from "../metric-copy";
 import { Logo } from "./Logo";
 
 export interface LoginPageProps {
@@ -29,11 +28,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       <div className="login-grid" aria-hidden />
 
       <main className="login-card">
-        <Logo size={88} showWordmark className="logo-brand--center" />
-        <p className="login-tagline">
-          <span className="login-tagline-main">{LOGIN_TAGLINE_MAIN}</span>
-          <span className="login-tagline-sub">{LOGIN_TAGLINE_SUB}</span>
-        </p>
+        <Logo size={96} showWordmark className="logo-brand--center login-hero-logo" />
 
         <form className="login-form" onSubmit={submit}>
           <label className="login-field">
