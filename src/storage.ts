@@ -4,6 +4,7 @@ import {
   type AdvisorFeedback,
   type LifeJourneyState,
 } from "./life-journey";
+import type { NavigatorPlan } from "./goal-navigator";
 import {
   DEFAULT_FOCUS_AREAS,
   type FocusAreaId,
@@ -17,6 +18,7 @@ export interface PersistedAppState {
   journey: LifeJourneyState;
   advisorFeedback: AdvisorFeedback[];
   focusAreas: FocusAreaId[];
+  navigatorPlan: NavigatorPlan | null;
 }
 
 export function defaultPersistedState(): PersistedAppState {
@@ -29,6 +31,7 @@ export function defaultPersistedState(): PersistedAppState {
     },
     advisorFeedback: [],
     focusAreas: [...DEFAULT_FOCUS_AREAS],
+    navigatorPlan: null,
   };
 }
 
@@ -59,7 +62,21 @@ export function parsePersistedState(raw: string | null): PersistedAppState {
     const focusAreas = Array.isArray(data.focusAreas)
       ? (data.focusAreas as FocusAreaId[])
       : base.focusAreas;
-    return { version: 1, inputs, journey, advisorFeedback, focusAreas };
+    const navigatorPlan =
+      data.navigatorPlan === null || data.navigatorPlan === undefined
+        ? null
+        : isRecord(data.navigatorPlan) &&
+            Array.isArray(data.navigatorPlan.tasks)
+          ? (data.navigatorPlan as unknown as NavigatorPlan)
+          : null;
+    return {
+      version: 1,
+      inputs,
+      journey,
+      advisorFeedback,
+      focusAreas,
+      navigatorPlan,
+    };
   } catch {
     return defaultPersistedState();
   }

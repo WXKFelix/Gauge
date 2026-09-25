@@ -1,4 +1,4 @@
-type TabIconId = "home" | "journey" | "nodes" | "metrics";
+type TabIconId = "home" | "navigator" | "journey" | "nodes" | "metrics";
 
 export interface TabIconProps {
   id: TabIconId;
@@ -31,6 +31,39 @@ export function TabIcon({ id, active = false }: TabIconProps) {
             strokeLinejoin="round"
           />
           <circle cx="12" cy="10" r="1.2" fill={accent} />
+        </svg>
+      );
+    case "navigator":
+      return (
+        <svg
+          className={className}
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          aria-hidden
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="8"
+            fill={fill}
+            stroke={stroke}
+            strokeWidth="1.6"
+          />
+          <path
+            d="M12 6v6l4 2"
+            stroke={accent}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 3v2M12 19v2M3 12h2M19 12h2"
+            stroke={stroke}
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
         </svg>
       );
     case "journey":

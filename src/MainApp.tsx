@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { UserSession } from "./auth";
 import { AppTabBar, type AppTabId } from "./components/AppTabBar";
+import { GoalNavigatorPanel } from "./components/GoalNavigatorPanel";
 import { FocusPicker } from "./components/FocusPicker";
 import { Gauge } from "./components/Gauge";
 import { HeroMeaningCard } from "./components/HeroMeaningCard";
@@ -25,6 +26,13 @@ import {
   driftMetric,
   type QuantifiedLifeInputs,
 } from "./quantified-life";
+import {
+  createPlanFromOption,
+  planProgressPercent,
+  tasksForHorizon,
+  type NavigatorPlan,
+} from "./goal-navigator";
+import type { NodeAdviceBundle, NodeAdviceOption } from "./life-advice-types";
 import {
   loadPersistedState,
   savePersistedState,
@@ -63,6 +71,11 @@ export function MainApp({ session, onLogout }: MainAppProps) {
       ? loadPersistedState().focusAreas
       : ["career", "daily", "relationship"]
   );
+  const [navigatorPlan, setNavigatorPlan] = useState<NavigatorPlan | null>(() =>
+    typeof window !== "undefined"
+      ? loadPersistedState().navigatorPlan
+      : null
+  );
 
   const gaugeSize = useGaugeSize("default");
   const heroGaugeSize = useGaugeSize("hero");
@@ -84,8 +97,23 @@ export function MainApp({ session, onLogout }: MainAppProps) {
       journey,
       advisorFeedback,
       focusAreas,
+      navigatorPlan,
     });
-  }, [inputs, journey, advisorFeedback, focusAreas]);
+  }, [inputs, journey, advisorFeedback, focusAreas, navigatorPlan]);
+
+  const activateNavigatorPlan = (
+    bundle: NodeAdviceBundle,
+    option: NodeAdviceOption
+  ) => {
+    const plan = createPlanFromOption(bundle.id, bundle.nodeLabel, option);
+    setNavigatorPlan(plan);
+    setTab("navigator");
+    setFeedbackToast("已纳入领航 · 今日焦点已就绪");
+  };
+
+  const navigatorPendingToday =
+    navigatorPlan != null &&
+    tasksForHorizon(navigatorPlan, "today").some((t) => !t.completed);
 
   useEffect(() => {
     if (!live) return;
@@ -240,13 +268,31 @@ export function MainApp({ session, onLogout }: MainAppProps) {
           <QuickMetricRow items={quickMetrics} />
           <HomeNodeTeaser
             bundle={nodeAdvice.primary}
+            navigatorProgress={
+              navigatorPlan ? planProgressPercent(navigatorPlan) : null
+            }
             onOpenNodes={() => setTab("nodes")}
+            onOpenNavigator={() => setTab("navigator")}
           />
           <p className="home-hint">
             {focusAreas.includes("relationship")
               ? "「坐标」记录对你重要的地点；「节点」在关键年龄给出最优解与备选路径。"
               : "「指标」滑块可即时预览不同人生状态下的推荐方案。"}
           </p>
+        </div>
+
+        <div
+          id="panel-navigator"
+          role="tabpanel"
+          aria-labelledby="tab-navigator"
+          hidden={tab !== "navigator"}
+          className="tab-panel"
+        >
+          <GoalNavigatorPanel
+            plan={navigatorPlan}
+            onPlanChange={setNavigatorPlan}
+            onOpenNodes={() => setTab("nodes")}
+          />
         </div>
 
         <div
@@ -271,6 +317,7 @@ export function MainApp({ session, onLogout }: MainAppProps) {
             primary={nodeAdvice.primary}
             urgent={nodeAdvice.urgent}
             milestone={nodeAdvice.milestone}
+            onActivatePlan={activateNavigatorPlan}
             onFeedback={(fb) => {
               setAdvisorFeedback((prev) => [
                 ...prev,
@@ -360,6 +407,7 @@ export function MainApp({ session, onLogout }: MainAppProps) {
         active={tab}
         onChange={setTab}
         nodeBadge={nodeAdvice.primary != null}
+        navigatorBadge={navigatorPendingToday}
       />
     </div>
   );
