@@ -1,4 +1,4 @@
-import type { NodeAdviceBundle } from "../life-advice-types";
+import type { NodeAdviceBundle, NodeAdviceOption } from "../life-advice-types";
 import type { AdvisorFeedback } from "../life-journey";
 import { KeyNodeTimeline } from "./KeyNodeTimeline";
 
@@ -19,10 +19,12 @@ const METRIC_LABEL: Record<string, string> = {
 function AdviceBlock({
   bundle,
   onFeedback,
+  onActivatePlan,
   heading,
 }: {
   bundle: NodeAdviceBundle;
   onFeedback: (feedback: Omit<AdvisorFeedback, "at">) => void;
+  onActivatePlan?: (option: NodeAdviceOption) => void;
   heading?: string;
 }) {
   return (
@@ -61,6 +63,15 @@ function AdviceBlock({
             </dl>
             <p className="advisor-risk">{opt.riskNote}</p>
             <div className="advisor-card-actions">
+              {opt.tier === "optimal" && onActivatePlan ? (
+                <button
+                  type="button"
+                  className="btn-primary advisor-activate"
+                  onClick={() => onActivatePlan(opt)}
+                >
+                  纳入领航
+                </button>
+              ) : null}
               <button
                 type="button"
                 className="btn-secondary"
@@ -100,6 +111,7 @@ export interface NodeAdvicePanelProps {
   milestone: NodeAdviceBundle | null;
   urgent: NodeAdviceBundle | null;
   onFeedback: (feedback: Omit<AdvisorFeedback, "at">) => void;
+  onActivatePlan?: (bundle: NodeAdviceBundle, option: NodeAdviceOption) => void;
   age: number;
 }
 
@@ -108,8 +120,14 @@ export function NodeAdvicePanel({
   milestone,
   urgent,
   onFeedback,
+  onActivatePlan,
   age,
 }: NodeAdvicePanelProps) {
+  const handleActivate = onActivatePlan
+    ? (option: NodeAdviceOption) => {
+        if (primary) onActivatePlan(primary, option);
+      }
+    : undefined;
   const showMilestoneAlso =
     urgent != null &&
     milestone != null &&
@@ -128,12 +146,18 @@ export function NodeAdvicePanel({
           <AdviceBlock
             bundle={primary}
             onFeedback={onFeedback}
+            onActivatePlan={handleActivate}
             heading={urgent ? "优先 · 状态预警最优解" : "当前窗口 · 人生节点最优解"}
           />
           {showMilestoneAlso && milestone ? (
             <AdviceBlock
               bundle={milestone}
               onFeedback={onFeedback}
+              onActivatePlan={
+                onActivatePlan
+                  ? (option) => onActivatePlan(milestone, option)
+                  : undefined
+              }
               heading="并行参考 · 年龄关键节点"
             />
           ) : null}

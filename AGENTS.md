@@ -2,8 +2,9 @@
 
 ## Git 分支命名（当前约定）
 
-- **主开发分支（固定名称）**：`cursor/quantified-life-dev`
-- 在团队另行规定之前，日常功能开发都在该分支（或从该分支拉出的短期分支）上进行，不再使用 `-a002` 等后缀。
+- **模块 2（目标领航）开发**：`cursor/bearing-module2-a002`
+- **改版前 UI 快照（可回退）**：`cursor/bearing-ui-baseline-a002`（与登录极简、BEARING 品牌一致）
+- **上一阶段综合开发**：`cursor/quantified-life-dev`
 
 ## 本地启动
 

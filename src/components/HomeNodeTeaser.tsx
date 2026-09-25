@@ -2,10 +2,17 @@ import type { NodeAdviceBundle } from "../life-advice-types";
 
 export interface HomeNodeTeaserProps {
   bundle: NodeAdviceBundle | null;
+  navigatorProgress?: number | null;
   onOpenNodes: () => void;
+  onOpenNavigator?: () => void;
 }
 
-export function HomeNodeTeaser({ bundle, onOpenNodes }: HomeNodeTeaserProps) {
+export function HomeNodeTeaser({
+  bundle,
+  navigatorProgress,
+  onOpenNodes,
+  onOpenNavigator,
+}: HomeNodeTeaserProps) {
   if (!bundle) return null;
   const optimal = bundle.options.find((o) => o.tier === "optimal") ?? bundle.options[0];
   if (!optimal) return null;
@@ -21,9 +28,25 @@ export function HomeNodeTeaser({ bundle, onOpenNodes }: HomeNodeTeaserProps) {
       ) : null}
       <p className="node-teaser-reason">{bundle.reason}</p>
       <p className="node-teaser-optimal-title">{optimal.title}</p>
-      <button type="button" className="btn-secondary btn-block" onClick={onOpenNodes}>
-        查看完整方案与备选路径
-      </button>
+      {navigatorProgress != null ? (
+        <p className="node-teaser-nav-progress">
+          领航执行 <strong>{navigatorProgress}%</strong>
+        </p>
+      ) : null}
+      <div className="node-teaser-actions">
+        {onOpenNavigator ? (
+          <button
+            type="button"
+            className="btn-primary btn-block"
+            onClick={onOpenNavigator}
+          >
+            {navigatorProgress != null ? "继续领航" : "打开领航"}
+          </button>
+        ) : null}
+        <button type="button" className="btn-secondary btn-block" onClick={onOpenNodes}>
+          节点方案
+        </button>
+      </div>
     </section>
   );
 }
